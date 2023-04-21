@@ -18,7 +18,6 @@ namespace OnlineShop.Domain.Entities.Product
         public virtual ICollection<ProductDetailKeyValue> ProductDetailKeyValues { get; set; } = new List<ProductDetailKeyValue>();
 
         public virtual ICollection<ProductItem> Items { get; set; } = new List<ProductItem>();
-        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public virtual ICollection<ProductPeyvastFile> Pics { get; set; } = new List<ProductPeyvastFile>();
 
         public bool IsActive { get; set; }

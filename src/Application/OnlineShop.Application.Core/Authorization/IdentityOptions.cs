@@ -1,7 +1,10 @@
-﻿namespace OnlineShop.Application.Core.Authorization
+﻿using Microsoft.IdentityModel.Tokens;
+
+namespace OnlineShop.Application.Core.Authorization
 {
     public class IdentityOptions
     {
+        public string SecretKey { get; set; }
         public string DefaultScheme { get; set; }
         public string? DefaultAuthenticateScheme { get; set; }
         public string? DefaultChallengeScheme { get; set; }
@@ -13,6 +16,8 @@
         public string? ClaimsIssuer { get; set; }
         public string Audience { get; set; }
         public bool SaveToken { get; set; } = true;
+        public TimeSpan TokenExpires { get; set; }
+        public SigningCredentials? Credentials { get; set; }
 
         public IEnumerable<IdentityPolicy> Policies { get; set; } = new List<IdentityPolicy>();
     }

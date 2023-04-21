@@ -5,7 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using OnlineShop.Application.Core.Authorization;
+using OnlineShop.Application.Core.Services.Identity;
+using OnlineShop.Application.Services.Identity;
 using OnlineShop.Domain.Identity;
+using System.Text;
 
 namespace OnlineShop.Infrastructure.Authorization
 {
@@ -16,10 +19,18 @@ namespace OnlineShop.Infrastructure.Authorization
             services.AddHttpContextAccessor();
 
             services.AddScoped<IUser, AspNetUser>();
+            services.AddSingleton<IJwtFactory, JwtFactory>();
+
             var options = new IdentityOptions();
             configuration.GetSection(nameof(IdentityOptions)).Bind(options);
 
-            services.Configure<IdentityOptions>(configuration.GetSection(nameof(IdentityOptions)));
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(options.SecretKey));
+
+            services.Configure<IdentityOptions>(op =>
+            {
+                op.Credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+                op = options;
+            });
 
             var tokenValidationParameters = new TokenValidationParameters
             {

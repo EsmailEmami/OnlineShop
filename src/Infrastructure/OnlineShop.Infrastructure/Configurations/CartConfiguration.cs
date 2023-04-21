@@ -19,6 +19,8 @@ namespace OnlineShop.Infrastructure.Configurations
             builder.HasOne(x => x.Address).WithMany(x => x.Carts).HasForeignKey(x => x.AddressId).IsRequired(false);
 
             builder.Property(x => x.TrackingCode).HasMaxLength(20).IsRequired();
+
+            builder.Ignore(x => x.Sum);        
         }
     }
 }

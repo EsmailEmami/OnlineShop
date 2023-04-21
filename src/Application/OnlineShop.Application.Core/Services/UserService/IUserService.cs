@@ -10,5 +10,7 @@ namespace OnlineShop.Application.Core.Services.UserService
 {
     public interface IUserService : IApplicationService<long, User, UserInputDto, UserUpdateDto, UserOutputDto, UserSPFInputDto>
     {
+        User Login(string userNameOrEmail, string password);
+        Task<User> CreateUserAsync(User user);
     }
 }

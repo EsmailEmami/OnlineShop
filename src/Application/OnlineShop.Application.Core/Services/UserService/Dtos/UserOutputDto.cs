@@ -8,6 +8,7 @@ namespace OnlineShop.Application.Core.Services.UserService.Dtos
 {
     public class UserOutputDto
     {
+        public long Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }

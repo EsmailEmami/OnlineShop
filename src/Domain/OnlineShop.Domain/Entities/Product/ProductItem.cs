@@ -1,4 +1,5 @@
 ﻿using OnlineShop.Domain.Core;
+using OnlineShop.Domain.Entities.Cart;
 using OnlineShop.Domain.Entities.System;
 
 namespace OnlineShop.Domain.Entities.Product
@@ -16,5 +17,6 @@ namespace OnlineShop.Domain.Entities.Product
         public string Description { get; set; }
 
         public virtual ICollection<ProductItemSeller> Sellers { get; set; } = new List<ProductItemSeller>();
+        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     }
 }

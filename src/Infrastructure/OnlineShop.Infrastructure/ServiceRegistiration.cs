@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OnlineShop.Api.Infrastructure.Middleware;
 using OnlineShop.Application;
+using OnlineShop.Application.Core;
 using OnlineShop.Application.Mapping;
+using OnlineShop.Common.Security;
 using OnlineShop.Infrastructure.Authorization;
 using OnlineShop.Infrastructure.Context;
 using OnlineShop.Infrastructure.EFCoreConfig;
@@ -19,6 +22,7 @@ namespace OnlineShop.Infrastructure
 
             //services.AddAutoMapper(typeof(IApplicationService<,,,,,>));
             services.AddSingleton<IMapping, Mapping>();
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddApplicationServicesIoC();
 
@@ -31,8 +35,9 @@ namespace OnlineShop.Infrastructure
         {
             app.UseStaticFiles();
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
             app.UseIdentity();
+
+            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
             return app;
         }
 
@@ -40,7 +45,7 @@ namespace OnlineShop.Infrastructure
         {
             //Services
             var applicationLayer = typeof(ApplicationService<,,,,,>).Assembly;
-            var applicationServices = applicationLayer.GetTypes().Where(t => t.Name.EndsWith("Service") && t.BaseType?.IsGenericType == true && t.BaseType.GetGenericTypeDefinition() == typeof(ApplicationService<,,,,,>)).ToArray();
+            var applicationServices = applicationLayer.GetTypes().Where(t => t.Name.EndsWith("Service") && t.BaseType?.IsGenericType == true && (t.BaseType.GetGenericTypeDefinition() == typeof(ApplicationService<,,,,,>) || t.BaseType.GetGenericTypeDefinition() == typeof(ApplicationService<,,,,>))).ToArray();
 
             foreach (var service in applicationServices)
             {

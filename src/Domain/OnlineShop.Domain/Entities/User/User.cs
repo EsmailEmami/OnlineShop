@@ -6,25 +6,21 @@ namespace OnlineShop.Domain.Entities.User
 {
     public class User : Entity<long>
     {
-        
-
-        public string FirstName { get; set; }
-
-        public User(string firstName, string userName, string email, string phoneNumber, string password, string lastName)
+        public User(string firstName, string userName, string password, string lastName, int roleId)
         {
             FirstName = firstName;
             UserName = userName;
-            Email = email;
-            PhoneNumber = phoneNumber;
             Password = password;
             LastName = lastName;
+            RoleId = roleId;
         }
 
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public string? UserAvatar { get; set; }
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         public string? InviteCode { get; set; }
         public int InviteCount { get; set; } = 0;
         public int Score { get; set; } = 0;

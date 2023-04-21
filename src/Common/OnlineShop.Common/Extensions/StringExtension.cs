@@ -4,7 +4,7 @@ namespace OnlineShop.Common.Extensions
 {
     public static class StringExtension
     {
-        public static bool HasValue(this string value) => !string.IsNullOrEmpty(value);
+        public static bool HasValue(this string? value) => !string.IsNullOrEmpty(value);
         public static class NameOf<TSource>
         {
             #region Public Methods

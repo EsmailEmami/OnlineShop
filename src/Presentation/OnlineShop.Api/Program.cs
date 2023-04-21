@@ -1,3 +1,4 @@
+using OnlineShop.Api.Infrastructure.Middleware;
 using OnlineShop.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);

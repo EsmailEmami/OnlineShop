@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using OnlineShop.Common.Exceptions;
 using OnlineShop.Data.Core;
 using OnlineShop.Domain.Core;
 using OnlineShop.Domain.Entities.User;
@@ -43,7 +44,7 @@ namespace OnlineShop.Infrastructure.Context
             if (errors.Any())
             {
                 if (throwOnError)
-                    throw new ValidationException(string.Join(", ", errors));
+                    throw new DatabaseException(string.Join(", ", errors));
 
                 return errors;
             }
@@ -55,7 +56,7 @@ namespace OnlineShop.Infrastructure.Context
             catch (Exception e)
             {
                 if (throwOnError)
-                    throw new ValidationException(e.Message);
+                    throw new DatabaseException(e.Message);
 
                 return new List<string> { e.Message };
             }

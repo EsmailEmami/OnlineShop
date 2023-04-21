@@ -57,7 +57,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("AddressId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<short>("CartState")
@@ -66,9 +65,17 @@ namespace OnlineShop.Infrastructure.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("FinalSum")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("PayDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PostTrackingCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("SentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("TrackingCode")
                         .IsRequired()
@@ -106,14 +113,14 @@ namespace OnlineShop.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<Guid>("ProductId")
+                    b.Property<Guid>("ProductItemId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
-                    b.Property<decimal>("Sum")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<Guid>("SellerId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("TrackingCode")
                         .IsRequired()
@@ -126,7 +133,9 @@ namespace OnlineShop.Infrastructure.Migrations
 
                     b.HasIndex("DiscountId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductItemId");
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("CartItem");
                 });
@@ -354,6 +363,10 @@ namespace OnlineShop.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductDetailKeyId");
@@ -504,6 +517,9 @@ namespace OnlineShop.Infrastructure.Migrations
                     b.Property<string>("OriginalName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("Type")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -670,7 +686,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -700,7 +715,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
@@ -752,9 +766,7 @@ namespace OnlineShop.Infrastructure.Migrations
                 {
                     b.HasOne("OnlineShop.Domain.Entities.User.Address", "Address")
                         .WithMany("Carts")
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("OnlineShop.Domain.Entities.User.User", "User")
                         .WithMany("Carts")
@@ -781,17 +793,25 @@ namespace OnlineShop.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineShop.Domain.Entities.Product.Product", "Product")
+                    b.HasOne("OnlineShop.Domain.Entities.Product.ProductItem", "ProductItem")
                         .WithMany("CartItems")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductItemId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineShop.Domain.Entities.Product.ProductItemSeller", "Seller")
+                        .WithMany("CartItems")
+                        .HasForeignKey("SellerId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cart");
 
                     b.Navigation("Discount");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductItem");
+
+                    b.Navigation("Seller");
                 });
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Discount.DiscountUser", b =>
@@ -1006,8 +1026,6 @@ namespace OnlineShop.Infrastructure.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Product.Product", b =>
                 {
-                    b.Navigation("CartItems");
-
                     b.Navigation("Items");
 
                     b.Navigation("Pics");
@@ -1022,7 +1040,14 @@ namespace OnlineShop.Infrastructure.Migrations
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Product.ProductItem", b =>
                 {
+                    b.Navigation("CartItems");
+
                     b.Navigation("Sellers");
+                });
+
+            modelBuilder.Entity("OnlineShop.Domain.Entities.Product.ProductItemSeller", b =>
+                {
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("OnlineShop.Domain.Entities.Product.ProductType", b =>

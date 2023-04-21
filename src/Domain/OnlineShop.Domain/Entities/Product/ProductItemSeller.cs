@@ -1,4 +1,5 @@
 ﻿using OnlineShop.Domain.Core;
+using OnlineShop.Domain.Entities.Cart;
 
 namespace OnlineShop.Domain.Entities.Product
 {
@@ -13,5 +14,8 @@ namespace OnlineShop.Domain.Entities.Product
         public double Quantity { get; set; }
 
         public bool IsActive { get; set; }
+
+        public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+
     }
 }

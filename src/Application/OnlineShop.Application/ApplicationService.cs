@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using OnlineShop.Application.Core;
+﻿using OnlineShop.Application.Core;
 using OnlineShop.Application.Mapping;
 using OnlineShop.Common.Dtos;
 using OnlineShop.Common.Exceptions;
@@ -7,7 +6,6 @@ using OnlineShop.Common.Extensions;
 using OnlineShop.Data.Core;
 using OnlineShop.Data.Core.Repositories;
 using OnlineShop.Domain.Core;
-using static OnlineShop.Application.Mapping.Mapping;
 
 namespace OnlineShop.Application
 {
@@ -28,7 +26,7 @@ namespace OnlineShop.Application
                                   IRepository<TEntity, TPrimaryKey> repository,
                                   IUnitOfWork unitOfWork)
         {
-            _mapping = mapping; 
+            _mapping = mapping;
             _repository = repository;
             _unitOfWork = unitOfWork;
 
@@ -45,18 +43,18 @@ namespace OnlineShop.Application
                 var res = _unitOfWork.SaveAllChanges();
                 if (res.Count > 0)
                 {
-                    throw new UserFriendlyException(string.Join(",", res));
+                    throw new BadRequestException(string.Join(",", res));
                 }
 
                 return dbModel.Id;
             }
-            catch (UserFriendlyException)
+            catch (BadRequestException)
             {
                 throw;
             }
             catch (Exception ex)
             {
-                throw new UserFriendlyException("خطای پایگاه داده" + ex.Message);
+                throw new DatabaseException(ex.Message);
             }
         }
 
@@ -76,16 +74,16 @@ namespace OnlineShop.Application
                 var res = _unitOfWork.SaveAllChanges();
                 if (res.Count > 0)
                 {
-                    throw new UserFriendlyException("خطا در حذف داده های ورودی");
+                    throw new BadRequestException("خطا در حذف داده های ورودی");
                 }
             }
-            catch (UserFriendlyException)
+            catch (BadRequestException)
             {
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new UserFriendlyException("خطای پایگاه داده");
+                throw new DatabaseException(ex.Message);
             }
         }
 
@@ -154,16 +152,16 @@ namespace OnlineShop.Application
                 var res = _unitOfWork.SaveAllChanges(false);
                 if (res.Count > 0)
                 {
-                    throw new UserFriendlyException("خطا در ذخیره سازی داده های ورودی");
+                    throw new BadRequestException("خطا در ذخیره سازی داده های ورودی");
                 }
             }
-            catch (UserFriendlyException)
+            catch (BadRequestException)
             {
                 throw;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new UserFriendlyException("خطای پایگاه داده");
+                throw new DatabaseException(ex.Message);
             }
         }
 

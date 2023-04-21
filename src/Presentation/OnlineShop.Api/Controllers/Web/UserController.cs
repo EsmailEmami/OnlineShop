@@ -2,13 +2,12 @@
 using OnlineShop.Application.Core.Services.UserService.Dtos;
 using OnlineShop.Domain.Entities.User;
 
-namespace OnlineShop.Api.Controllers
+namespace OnlineShop.Api.Controllers.Web
 {
     public class UserController : BaseApiController<long, User, UserInputDto, UserUpdateDto, UserOutputDto, UserSPFInputDto>
     {
         public UserController(IUserService service) : base(service)
         {
-          
         }
     }
 }
