@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Domain.Exceptions
+﻿namespace OnlineShop.Common.Exceptions
 {
     public class EntityNotFoundException : Exception
     {

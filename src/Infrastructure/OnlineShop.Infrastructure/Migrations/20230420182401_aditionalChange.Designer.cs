@@ -12,8 +12,8 @@ using OnlineShop.Infrastructure.Context;
 namespace OnlineShop.Infrastructure.Migrations
 {
     [DbContext(typeof(OnlineShopDbContext))]
-    [Migration("20230420124404_initialize_database")]
-    partial class initialize_database
+    [Migration("20230420182401_aditionalChange")]
+    partial class aditionalChange
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -682,7 +682,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("InviteCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("InviteCount")
@@ -697,7 +696,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NationalCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -708,9 +706,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RegisterDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -718,11 +713,9 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<long?>("SellerId")
-                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<string>("UserAvatar")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -739,7 +732,8 @@ namespace OnlineShop.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.HasIndex("SellerId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[SellerId] IS NOT NULL");
 
                     b.HasIndex("UserName");
 
@@ -979,9 +973,7 @@ namespace OnlineShop.Infrastructure.Migrations
 
                     b.HasOne("OnlineShop.Domain.Entities.User.Seller", "Seller")
                         .WithOne("User")
-                        .HasForeignKey("OnlineShop.Domain.Entities.User.User", "SellerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OnlineShop.Domain.Entities.User.User", "SellerId");
 
                     b.Navigation("Role");
 

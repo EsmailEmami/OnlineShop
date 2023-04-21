@@ -1,6 +1,6 @@
-﻿using OnlineShop.Data.Core.Repositories;
+﻿using OnlineShop.Common.Exceptions;
+using OnlineShop.Data.Core.Repositories;
 using OnlineShop.Domain.Core;
-using OnlineShop.Domain.Exceptions;
 using System.Linq.Expressions;
 
 namespace OnlineShop.Data.Core

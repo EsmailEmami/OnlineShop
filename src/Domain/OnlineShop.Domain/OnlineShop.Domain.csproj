@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\OnlineShop.Common\OnlineShop.Common.csproj" />
     <ProjectReference Include="..\OnlineShop.Domain.Core\OnlineShop.Domain.Core.csproj" />
   </ItemGroup>
 

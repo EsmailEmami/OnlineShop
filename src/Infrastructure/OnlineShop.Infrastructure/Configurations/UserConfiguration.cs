@@ -26,7 +26,7 @@ namespace OnlineShop.Infrastructure.Configurations
             builder.HasIndex(x => x.LastName);
             builder.HasIndex(x => x.UserName);
 
-            builder.HasOne(x => x.Seller).WithOne(x => x.User).HasForeignKey<User>(x => x.SellerId).IsRequired();
+            builder.HasOne(x => x.Seller).WithOne(x => x.User).HasForeignKey<User>(x => x.SellerId).IsRequired(false);
             builder.HasOne(x => x.Role).WithMany(x => x.Users).HasForeignKey(x => x.RoleId).IsRequired();
         }
     }

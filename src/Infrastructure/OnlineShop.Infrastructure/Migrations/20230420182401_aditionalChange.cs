@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShop.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialize_database : Migration
+    public partial class aditionalChange : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -239,17 +239,16 @@ namespace OnlineShop.Infrastructure.Migrations
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserAvatar = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserAvatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    InviteCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    InviteCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     InviteCount = table.Column<int>(type: "int", nullable: false),
                     Score = table.Column<int>(type: "int", nullable: false),
-                    NationalCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NationalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AccountBalance = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsBlocked = table.Column<bool>(type: "bit", nullable: false),
-                    SellerId = table.Column<long>(type: "bigint", nullable: false),
+                    SellerId = table.Column<long>(type: "bigint", nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     Deleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -266,8 +265,7 @@ namespace OnlineShop.Infrastructure.Migrations
                         name: "FK_User_Seller_SellerId",
                         column: x => x.SellerId,
                         principalTable: "Seller",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -665,7 +663,8 @@ namespace OnlineShop.Infrastructure.Migrations
                 name: "IX_User_SellerId",
                 table: "User",
                 column: "SellerId",
-                unique: true);
+                unique: true,
+                filter: "[SellerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_UserName",

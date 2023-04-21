@@ -16,7 +16,7 @@ namespace OnlineShop.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.User).WithMany(x => x.Carts).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict).IsRequired();
 
-            builder.HasOne(x => x.Address).WithMany(x => x.Carts).HasForeignKey(x => x.AddressId);
+            builder.HasOne(x => x.Address).WithMany(x => x.Carts).HasForeignKey(x => x.AddressId).IsRequired(false);
 
             builder.Property(x => x.TrackingCode).HasMaxLength(20).IsRequired();
         }
