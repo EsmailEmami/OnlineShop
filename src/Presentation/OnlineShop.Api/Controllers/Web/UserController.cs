@@ -11,7 +11,6 @@ namespace OnlineShop.Api.Controllers.Web
 
         public UserController(IUserService service) : base(service)
         {
-            throw new Exception();
             _userService = service;
         }
 
@@ -20,7 +19,7 @@ namespace OnlineShop.Api.Controllers.Web
         public async Task<IActionResult> ChangePassword([FromRoute] long id, [FromBody] UserChangePaswordInputDto model)
         {
             await _userService.ChangePassword(id, model);
-            return Ok(model);
+            return OkResult(model);
         }
     }
 }

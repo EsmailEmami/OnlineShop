@@ -89,7 +89,7 @@ namespace OnlineShop.Api.Controllers.Web
                 // delete last file 
                 DeleteFile(Path.Combine(PeyvastFileType.Product.GetFilePath(), currentFileName));
 
-                return Ok();
+                return OkResult();
             }
             catch
             {
@@ -112,7 +112,7 @@ namespace OnlineShop.Api.Controllers.Web
             // delete file 
             DeleteFile(Path.Combine(PeyvastFileType.Product.GetFilePath(), productPeyvastFile.PeyvastFile.FileName));
 
-            return Ok();
+            return OkResult();
         }
     }
 }

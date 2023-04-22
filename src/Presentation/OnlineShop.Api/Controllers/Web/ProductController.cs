@@ -23,7 +23,7 @@ namespace OnlineShop.Api.Controllers.Web
         [Route("{id}")]
         public IActionResult Get([FromRoute] Guid id)
         {
-            return Ok(_productService.GetProductDetail(id));
+            return OkResult(_productService.GetProductDetail(id));
         }
     }
 }

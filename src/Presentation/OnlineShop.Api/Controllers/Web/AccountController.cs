@@ -31,7 +31,7 @@ namespace OnlineShop.Api.Controllers.Web
         {
             User user = _userService.Login(model.UserNameOrEmail, model.Password);
 
-            return Ok(_jwtFactory.GenerateJwtToken(user));
+            return OkResult(_jwtFactory.GenerateJwtToken(user));
         }
 
         [HttpPost]

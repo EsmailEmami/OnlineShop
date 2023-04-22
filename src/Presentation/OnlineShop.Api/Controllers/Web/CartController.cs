@@ -17,14 +17,14 @@ namespace OnlineShop.Api.Controllers.Web
         [Route("[action]/{id}")]
         public IActionResult WithItems([FromRoute] Guid id)
         {
-            return Ok(_cartService.GetWithItems(id));
+            return OkResult(_cartService.GetWithItems(id));
         }
 
         [HttpGet]
         [Route("[action]/{id}")]
         public IActionResult WithDetail([FromRoute] Guid id)
         {
-            return Ok(_cartService.GetWithDetail(id));
+            return OkResult(_cartService.GetWithDetail(id));
         }
     }
 }

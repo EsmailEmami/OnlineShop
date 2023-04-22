@@ -96,7 +96,7 @@ namespace OnlineShop.Api.Controllers
         #region GetList
 
         [HttpGet]
-        public virtual ActionResult<SPFOutPutDto<TOutputDto>> GetList([FromQuery] TSPFInputDto model) => Ok(_service.GetAllWithSPF(model));
+        public virtual ActionResult<SPFOutPutDto<TOutputDto>> GetList([FromQuery] TSPFInputDto model) => OkResult(_service.GetAllWithSPF(model));
 
         #endregion
 
@@ -104,7 +104,7 @@ namespace OnlineShop.Api.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public virtual async Task<ActionResult<TOutputDto>> GetById([FromRoute] TPrimaryKey id) => Ok(await _service.GetAsync(id));
+        public virtual async Task<ActionResult<TOutputDto>> GetById([FromRoute] TPrimaryKey id) => OkResult(await _service.GetAsync(id));
 
 
         #endregion
@@ -112,7 +112,7 @@ namespace OnlineShop.Api.Controllers
         #region Post
 
         [HttpPost]
-        public virtual async Task<ActionResult<TPrimaryKey>> PostEntity([FromBody] TInputDto model) => Ok(await _service.CreateAsync(model));
+        public virtual async Task<ActionResult<TPrimaryKey>> PostEntity([FromBody] TInputDto model) => OkResult(await _service.CreateAsync(model));
 
         #endregion
 
@@ -123,7 +123,7 @@ namespace OnlineShop.Api.Controllers
         public virtual async Task<IActionResult> PutEntity([FromRoute] TPrimaryKey id, [FromBody] TUpdateDto model)
         {
             await _service.UpdateAsync(id, model);
-            return Ok();
+            return OkResult();
         }
 
 
@@ -137,7 +137,7 @@ namespace OnlineShop.Api.Controllers
         {
             await _service.DeleteAsync(id);
 
-            return Ok();
+            return OkResult();
         }
 
         #endregion
