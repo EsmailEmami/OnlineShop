@@ -17,6 +17,32 @@ namespace OnlineShop.Application.Services.UserService
             _passwordHasher = passwordHasher;
         }
 
+        public async Task ChangePassword(long userId, UserChangePaswordInputDto model)
+        {
+            var user = _repository.FirstOrDefault(userId);
+            if (user == null)
+            {
+                throw new BadRequestException("مشکلی پیش آمده است!");
+            }
+
+            if (!model.NewPassword.Equals(model.RepeatedNewPassword))
+            {
+                throw new BadRequestException("لطفا رمز عبور خود را به درستی وارد کنید");
+            }
+
+            if (!_passwordHasher.Check(user.Password, model.CurrentPassword)) 
+            {
+                throw new BadRequestException("لطفا رمز عبور خود را به درستی وارد کنید");
+            }
+
+            var newPass = _passwordHasher.Hash(model.NewPassword);
+
+            user.Password = newPass;
+
+            await _repository.UpdateAsync(user);
+            _unitOfWork.SaveAllChanges();
+        }
+
         public async Task<User> CreateUserAsync(User user)
         {
             await _repository.InsertAsync(user);

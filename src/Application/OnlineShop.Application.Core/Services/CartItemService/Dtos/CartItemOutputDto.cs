@@ -15,7 +15,7 @@ namespace OnlineShop.Application.Core.Services.CartItemService.Dtos
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }
         public SelectListOutputDto Color { get; set; }
-        public Guid SellerId { get; set; }
+        public long SellerId { get; set; }
         public string StoreName { get; set; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using OnlineShop.Application.Core.Services.ProductType;
-using OnlineShop.Application.Core.Services.ProductType.Dtos;
+﻿using OnlineShop.Application.Core.Services.ProductTypeService;
+using OnlineShop.Application.Core.Services.ProductTypeService.Dtos;
 using OnlineShop.Application.Mapping;
 using OnlineShop.Data.Core;
 using OnlineShop.Data.Core.Repositories;
 
-namespace OnlineShop.Application.Services.ProductType
+namespace OnlineShop.Application.Services.ProductTypeService
 {
     public class ProductTypeService : ApplicationService<int, Domain.Entities.Product.ProductType, ProductTypeInputDto, ProductTypeUpdateDto, ProductTypeOutputDto>, IProductTypeService
     {

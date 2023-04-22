@@ -1,4 +1,4 @@
-﻿namespace OnlineShop.Application.Core.Services.ProductType.Dtos
+﻿namespace OnlineShop.Application.Core.Services.ProductTypeService.Dtos
 {
     public class ProductTypeInputDto
     {

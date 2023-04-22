@@ -40,7 +40,7 @@ namespace OnlineShop.Application.Mapping
         public IQueryable<TTarget> ProjectTo<TSource, TTarget>(IQueryable<TSource> source) where TSource : class where TTarget : class
         {
             var mapper = new Mapper(GetConfig<TSource, TTarget>());
-            var result = mapper.ProjectTo<TTarget>(source, null);
+            var result = mapper.ProjectTo<TTarget>(source,"");
 
             return result;
         }

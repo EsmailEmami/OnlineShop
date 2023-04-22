@@ -54,7 +54,7 @@ namespace OnlineShop.Application
             }
             catch (Exception ex)
             {
-                throw new DatabaseException(ex.Message);
+                throw new DatabaseException(ex);
             }
         }
 
@@ -83,7 +83,7 @@ namespace OnlineShop.Application
             }
             catch (Exception ex)
             {
-                throw new DatabaseException(ex.Message);
+                throw new DatabaseException(ex);
             }
         }
 
@@ -113,6 +113,9 @@ namespace OnlineShop.Application
 
         public virtual SPFOutPutDto<OutputDto> GetAllWithSPF(SPFInputDto model)
         {
+            if (model == null)
+                model = Activator.CreateInstance<SPFInputDto>();
+
             var dbResult = _repository.GetAll().Where(x => !x.Deleted);
 
             List<OutputDto> res;
@@ -161,7 +164,7 @@ namespace OnlineShop.Application
             }
             catch (Exception ex)
             {
-                throw new DatabaseException(ex.Message);
+                throw new DatabaseException(ex);
             }
         }
 

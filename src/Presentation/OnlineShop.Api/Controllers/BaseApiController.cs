@@ -3,6 +3,7 @@ using OnlineShop.Application.Core;
 using OnlineShop.Common.Dtos;
 using OnlineShop.Common.Extensions;
 using OnlineShop.Domain.Core;
+using OnlineShop.Domain.Entities.System;
 
 namespace OnlineShop.Api.Controllers
 {
@@ -34,6 +35,14 @@ namespace OnlineShop.Api.Controllers
         }
 
         [NonAction]
+        public async Task<string> SaveFile(IFormFile file, PeyvastFileType type)
+        {
+            var path = type.GetFilePath();
+            return await SaveFile(file, path);
+        }
+
+
+       [NonAction]
         public string GetPhysicalPathFromVirtual(string path)
         {
             var vFolderPath = Path.Combine(Directory.GetCurrentDirectory(), path);

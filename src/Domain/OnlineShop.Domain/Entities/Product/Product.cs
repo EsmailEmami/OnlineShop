@@ -1,6 +1,4 @@
 ﻿using OnlineShop.Domain.Core;
-using OnlineShop.Domain.Entities.Cart;
-using OnlineShop.Domain.Entities.System;
 
 namespace OnlineShop.Domain.Entities.Product
 {

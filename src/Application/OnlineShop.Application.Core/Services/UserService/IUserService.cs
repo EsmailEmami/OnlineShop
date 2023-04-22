@@ -12,5 +12,6 @@ namespace OnlineShop.Application.Core.Services.UserService
     {
         User Login(string userNameOrEmail, string password);
         Task<User> CreateUserAsync(User user);
+        Task ChangePassword(long userId, UserChangePaswordInputDto model);
     }
 }

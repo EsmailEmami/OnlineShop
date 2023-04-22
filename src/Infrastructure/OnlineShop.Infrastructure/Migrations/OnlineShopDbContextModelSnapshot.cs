@@ -107,7 +107,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<long?>("DiscountId")
-                        .IsRequired()
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Price")
@@ -507,9 +506,6 @@ namespace OnlineShop.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
                     b.Property<string>("MimeType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -789,9 +785,7 @@ namespace OnlineShop.Infrastructure.Migrations
 
                     b.HasOne("OnlineShop.Domain.Entities.Discount.ProductDiscount", "Discount")
                         .WithMany("CartItems")
-                        .HasForeignKey("DiscountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DiscountId");
 
                     b.HasOne("OnlineShop.Domain.Entities.Product.ProductItem", "ProductItem")
                         .WithMany("CartItems")

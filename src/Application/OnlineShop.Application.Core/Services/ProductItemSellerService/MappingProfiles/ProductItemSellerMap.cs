@@ -23,6 +23,10 @@ namespace OnlineShop.Application.Core.Services.ProductItemSellerService.MappingP
                 .ForMember(x => x.SellerLastName, opt => opt.MapFrom(x => x.Seller.User.LastName))
                 .ForMember(x => x.SellerUserName, opt => opt.MapFrom(x => x.Seller.User.UserName))
                 .ForMember(x => x.SellerPhoneNumber, opt => opt.MapFrom(x => x.Seller.User.PhoneNumber));
+
+            CreateMap<ProductItemSeller, ProductDetailSellerOutputDto>()
+               .ForMember(x => x.StoreName, opt => opt.MapFrom(x => x.Seller.StoreName));
+
         }
     }
 }

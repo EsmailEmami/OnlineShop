@@ -8,5 +8,9 @@
         public DatabaseException(string message) : base("خطای پایگاه داده =>" + message)
         {
         }
+
+        public DatabaseException(Exception ex) : base("خطای پایگاه داده =>" + ex.Message, ex.InnerException)
+        {
+        }
     }
 }

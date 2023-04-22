@@ -1,4 +1,5 @@
-﻿using OnlineShop.Common.Dtos;
+﻿using OnlineShop.Common.Attributes;
+using OnlineShop.Common.Dtos;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -121,6 +122,18 @@ namespace OnlineShop.Common.Extensions
                 Key = Convert.ToInt32(Convert.ChangeType(item, (item as Enum).GetTypeCode())),
                 Name = GetDisplayName(item as Enum),
             })).ToList();
+        }
+
+        public static string GetFilePath(this Enum? enumValue)
+        {
+            try
+            {
+                return enumValue?.GetType()?.GetMember(enumValue.ToString())?.FirstOrDefault()?.GetCustomAttribute<FilePathAttribute>()?.Path!;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }

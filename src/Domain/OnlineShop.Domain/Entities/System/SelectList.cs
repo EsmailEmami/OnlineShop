@@ -16,10 +16,7 @@ namespace OnlineShop.Domain.Entities.System
 
     public enum SelectListType : short
     {
-        [Display(Name = "نوع کالا")]
-        ProductType = 0,
-
         [Display(Name = "رنگ")]
-        Color = 1,
+        Color = 0,
     }
 }

@@ -11,6 +11,8 @@ namespace OnlineShop.Application.Core.Services.ProductItemService.MapingProfiles
             CreateMap<ProductItemInputDto, ProductItem>();
             CreateMap<ProductItemUpdateDto, ProductItem>();
             CreateMap<ProductItem, ProductItemOutputDto>();
+            CreateMap<ProductItem, ProductDetailItemOutputDto>();
+
         }
     }
 }

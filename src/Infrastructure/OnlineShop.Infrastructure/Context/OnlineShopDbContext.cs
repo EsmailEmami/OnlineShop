@@ -56,7 +56,7 @@ namespace OnlineShop.Infrastructure.Context
             catch (Exception e)
             {
                 if (throwOnError)
-                    throw new DatabaseException(e.Message);
+                    throw new DatabaseException(e);
 
                 return new List<string> { e.Message };
             }

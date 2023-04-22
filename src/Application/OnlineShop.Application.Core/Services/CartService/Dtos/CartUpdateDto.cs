@@ -2,5 +2,6 @@
 {
     public class CartUpdateDto
     {
+        public Guid? AddressId { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace OnlineShop.Infrastructure.Configurations
             builder.HasOne(x => x.Seller).WithMany(x => x.CartItems).HasForeignKey(x => x.SellerId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
-            builder.HasOne(x => x.Discount).WithMany(x => x.CartItems).HasForeignKey(x => x.DiscountId);
+            builder.HasOne(x => x.Discount).WithMany(x => x.CartItems).HasForeignKey(x => x.DiscountId).IsRequired(false);
             builder.Property(x => x.TrackingCode).HasMaxLength(20).IsRequired();
 
             builder.Ignore(x => x.Sum);

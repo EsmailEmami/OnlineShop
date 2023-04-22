@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace OnlineShop.Application.Core.Services.ProductService
 {
-    public interface IProductService : IApplicationService<Guid, Product, ProductInputDto, ProductUpdateDto, ProductOutputDto>
+    public interface IProductService : IApplicationService<Guid, Product, ProductInputDto, ProductUpdateDto, ProductOutputDto, ProductSPFInputDto>
     {
+        ProductDetailOutputDto GetProductDetail(Guid productId);
     }
 }

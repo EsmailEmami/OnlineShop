@@ -16,6 +16,7 @@ namespace OnlineShop.Infrastructure.Configurations
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.ProductType).WithMany(x => x.Products).HasForeignKey(x => x.ProductTypeId).IsRequired();
             builder.HasOne(x => x.Company).WithMany(x => x.Products).HasForeignKey(x => x.CompanyId).IsRequired();
+            builder.HasQueryFilter(x => x.IsActive);
         }
     }
 }
