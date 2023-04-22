@@ -2,7 +2,7 @@
 {
     public class UnauthorizedException : Exception
     {
-        public UnauthorizedException()
+        public UnauthorizedException() : base("دسترسی ندارید")
         {
         }
         public UnauthorizedException(string message) : base(message)

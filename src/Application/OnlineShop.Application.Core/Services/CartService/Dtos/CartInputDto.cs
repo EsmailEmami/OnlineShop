@@ -6,7 +6,7 @@ namespace OnlineShop.Application.Core.Services.CartService.Dtos
     public class CartInputDto
     {
         public CartState CartState { get; set; } = CartState.Open;
-        public long UserId { get; set; }
+        public long UserId { get; set; } = 0;
         public Guid? AddressId { get; set; }
         public IList<CartItemInputDto> CartItems { get; set; } = new List<CartItemInputDto>();
     }

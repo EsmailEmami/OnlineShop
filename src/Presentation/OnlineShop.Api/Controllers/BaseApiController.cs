@@ -41,8 +41,7 @@ namespace OnlineShop.Api.Controllers
             return await SaveFile(file, path);
         }
 
-
-       [NonAction]
+        [NonAction]
         public string GetPhysicalPathFromVirtual(string path)
         {
             var vFolderPath = Path.Combine(Directory.GetCurrentDirectory(), path);
@@ -61,6 +60,18 @@ namespace OnlineShop.Api.Controllers
                     System.IO.File.Delete(filePath);
             }
             catch { }
+        }
+
+        [NonAction]
+        public OkObjectResult OkResult(object? result = null)
+        {
+            return base.Ok(new Response(result));
+        }
+
+        [NonAction]
+        public OkObjectResult OkResult(string message, object? result = null)
+        {
+            return base.Ok(new Response(message, result));
         }
     }
 

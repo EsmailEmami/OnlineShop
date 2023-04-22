@@ -21,28 +21,23 @@ namespace OnlineShop.Infrastructure.Authorization
             services.AddScoped<IUser, AspNetUser>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
 
+            // configure identity options
             var options = new IdentityOptions();
             configuration.GetSection(nameof(IdentityOptions)).Bind(options);
+            services.Configure<IdentityOptions>(configuration.GetSection("IdentityOptions"));
 
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(options.SecretKey));
-
-            services.Configure<IdentityOptions>(op =>
-            {
-                op.Credentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-                op = options;
-            });
-
+            // token validation parameters
             var tokenValidationParameters = new TokenValidationParameters
             {
-                ValidateIssuer = options.TokenParameters.ValidateIssuer,
-                ValidIssuers = options.TokenParameters.ValidIssuers,
-                ValidateAudience = options.TokenParameters.ValidateAudience,
-                ValidAudiences = options.TokenParameters.ValidAudiences,
-                RequireExpirationTime = options.TokenParameters.RequireExpirationTime,
-                ValidateLifetime = options.TokenParameters.ValidateLifetime,
-                ClockSkew = options.TokenParameters.ClockSkew,
+                ValidateIssuer = options.ValidateIssuer,
+                ValidateAudience = options.ValidateAudience,
+                ValidateLifetime = options.ValidateLifeTime,
+                ValidateIssuerSigningKey = options.ValidateIssuerSigningKey,
+                ValidIssuer = options.Issuer,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Key))
             };
 
+            // events
             var signalRJwtEvent = new JwtBearerEvents
             {
                 OnMessageReceived = context =>
@@ -69,26 +64,27 @@ namespace OnlineShop.Infrastructure.Authorization
             services.AddAuthentication(authenticationOptions =>
             {
                 authenticationOptions.DefaultScheme = options.DefaultScheme;
-                authenticationOptions.DefaultAuthenticateScheme = options.DefaultAuthenticateScheme;
-                authenticationOptions.DefaultChallengeScheme = options.DefaultChallengeScheme;
-
+                authenticationOptions.DefaultAuthenticateScheme = options.DefaultScheme;
+                authenticationOptions.DefaultChallengeScheme = options.DefaultScheme;
             }).AddJwtBearer(options.DefaultScheme, configureOptions =>
             {
-                configureOptions.RequireHttpsMetadata = options.RequireHttpsMetadata;
-                configureOptions.Authority = options.Authority;
-                configureOptions.Audience = options.Audience;
-                configureOptions.ClaimsIssuer = options.ClaimsIssuer;
                 configureOptions.TokenValidationParameters = tokenValidationParameters;
-                configureOptions.SaveToken = options.SaveToken;
                 configureOptions.Events = signalRJwtEvent;
             });
 
-            services.AddAuthorization(authorizationOptions =>
+            services.AddAuthorization();
+
+            services.AddCors(options =>
             {
-                foreach (var identityPolicy in options.Policies)
+                options.AddPolicy("EnableCors", builder =>
                 {
-                    authorizationOptions.AddPolicy(identityPolicy.Name, policy => policy.RequireClaim(identityPolicy.ClaimType, identityPolicy.Values));
-                }
+                    builder.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .WithOrigins("http://localhost:4200")
+                        .Build();
+
+                });
             });
 
             return services;
@@ -97,6 +93,7 @@ namespace OnlineShop.Infrastructure.Authorization
         {
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseCors("EnableCors");
             return app;
         }
     }

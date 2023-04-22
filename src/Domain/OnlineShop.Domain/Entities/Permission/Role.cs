@@ -14,6 +14,9 @@ namespace OnlineShop.Domain.Entities.Permission
         public string Name { get; set; }
         public RoleType RoleType { get; set; }
 
+        public virtual string Permissions { get; set; }
+        public string SecurityStamp { get; set; }
+
         public virtual ICollection<User.User> Users { get; set; } = new List<User.User>();
     }
 

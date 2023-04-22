@@ -1,20 +1,28 @@
-﻿using OnlineShop.Application.Core.Services.UserService;
+﻿using Microsoft.AspNetCore.DataProtection;
+using OnlineShop.Application.Core.Services.PermissionService;
+using OnlineShop.Application.Core.Services.UserService;
 using OnlineShop.Application.Core.Services.UserService.Dtos;
 using OnlineShop.Application.Mapping;
 using OnlineShop.Common.Exceptions;
 using OnlineShop.Common.Security;
 using OnlineShop.Data.Core;
 using OnlineShop.Data.Core.Repositories;
+using OnlineShop.Domain.Entities.Permission;
 using OnlineShop.Domain.Entities.User;
+using System.Xml.Linq;
 
 namespace OnlineShop.Application.Services.UserService
 {
     public class UserService : ApplicationService<long, User, UserInputDto, UserUpdateDto, UserOutputDto, UserSPFInputDto>, IUserService
     {
         private readonly IPasswordHasher _passwordHasher;
-        public UserService(IMapping mapping, IRepository<User, long> repository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher) : base(mapping, repository, unitOfWork)
+        private readonly IDataProtectionProvider _rootProvider;
+        private readonly IPermissionService _permissionService;
+        public UserService(IMapping mapping, IRepository<User, long> repository, IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, IDataProtectionProvider rootProvider, IPermissionService permissionService) : base(mapping, repository, unitOfWork)
         {
             _passwordHasher = passwordHasher;
+            _rootProvider = rootProvider;
+            _permissionService = permissionService;
         }
 
         public async Task ChangePassword(long userId, UserChangePaswordInputDto model)
@@ -49,6 +57,27 @@ namespace OnlineShop.Application.Services.UserService
             _unitOfWork.SaveAllChanges();
 
             return user;
+        }
+
+        public IList<string> GetUserPeymissions(long userId)
+        {
+            var user = _repository.Get(userId);
+            var securityTamp = user.Role.SecurityStamp;
+
+            string purpose = "OnlineShop.Application.Services.RoleService";
+            IDataProtector protector = _rootProvider.CreateProtector(purpose, securityTamp);
+            
+            List<string> permissions = new List<string>();
+            try
+            {
+                permissions = _permissionService.GetUserPermissionsAsList(XElement.Parse(protector.Unprotect(user.Role.Permissions))).ToList();
+            }
+            catch
+            {
+                //Ignored
+            }
+
+            return permissions;
         }
 
         public User Login(string userNameOrEmail, string password)

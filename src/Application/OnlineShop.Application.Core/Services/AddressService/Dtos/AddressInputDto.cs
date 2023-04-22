@@ -2,7 +2,7 @@
 {
     public class AddressInputDto
     {
-        public long UserId { get; set; }
+        public long UserId { get; set; } = 0;
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }

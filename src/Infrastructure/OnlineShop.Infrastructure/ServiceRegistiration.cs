@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OnlineShop.Api.Infrastructure.Middleware;
 using OnlineShop.Application;
-using OnlineShop.Application.Core;
 using OnlineShop.Application.Mapping;
 using OnlineShop.Common.Security;
 using OnlineShop.Infrastructure.Authorization;
 using OnlineShop.Infrastructure.Context;
 using OnlineShop.Infrastructure.EFCoreConfig;
+using OnlineShop.Infrastructure.ExceptionHandler;
 
 namespace OnlineShop.Infrastructure
 {
@@ -16,7 +16,6 @@ namespace OnlineShop.Infrastructure
     {
         public static IServiceCollection AddServiceRegistration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddCors();
 
             services.AddDbContext<OnlineShopDbContext>(configuration);
 
@@ -28,6 +27,11 @@ namespace OnlineShop.Infrastructure
 
             services.AddJwtIdentity(configuration);
 
+            // data protection
+            services.AddDataProtection()
+                .DisableAutomaticKeyGeneration()
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(150));
+
             return services;
         }
 
@@ -37,7 +41,9 @@ namespace OnlineShop.Infrastructure
 
             app.UseIdentity();
 
-            app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+            //app.UseMiddleware<GlobalErrorHandlingMiddleware>();
+            app.ConfigureExceptionHandler();
+
             return app;
         }
 

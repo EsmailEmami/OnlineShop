@@ -11,6 +11,7 @@ namespace OnlineShop.Api.Controllers.Web
 
         public UserController(IUserService service) : base(service)
         {
+            throw new Exception();
             _userService = service;
         }
 

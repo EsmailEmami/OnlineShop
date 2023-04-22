@@ -7,6 +7,7 @@ using OnlineShop.Common.Extensions;
 using OnlineShop.Domain.Entities.User;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 
 namespace OnlineShop.Application.Services.Identity
 {
@@ -28,28 +29,21 @@ namespace OnlineShop.Application.Services.Identity
                     new Claim(ClaimTypes.Name, user.UserName),
                 };
 
-            if (user.Email.HasValue())
-            {
-                claims.Add(new Claim(ClaimTypes.Email, user.Email));
-            }
+            var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Key));
+            var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            DateTime ecxpiresAt = DateTime.Now.Add(_jwtOptions.ExpiresAt);
+            var tokenOptions = new JwtSecurityToken(
+                issuer: _jwtOptions.Issuer,
+                audience: _jwtOptions.Audience,
+                claims: claims,
+                expires: ecxpiresAt,
+                signingCredentials: signinCredentials
+            );
 
-            var identity = new ClaimsIdentity(claims);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            DateTime expiresAt = DateTime.Now.Add(_jwtOptions.TokenExpires);
-            var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
-            {
-                Issuer = _jwtOptions.ClaimsIssuer,
-                Audience = _jwtOptions.Audience,
-                Subject = identity,
-                NotBefore = DateTime.UtcNow,
-                Expires = expiresAt,
-                SigningCredentials = _jwtOptions.Credentials,
-            });
 
-            var strToken = tokenHandler.WriteToken(token);
-
-            return new LoginSuccessResponseDto(user.Id, user.FirstName, user.LastName, user.UserName, user.Email, expiresAt, strToken);
+            return new LoginSuccessResponseDto(user.Id, user.FirstName, user.LastName, user.UserName, user.Email, DateTime.Now.AddDays(30), tokenString);
         }
 
     }

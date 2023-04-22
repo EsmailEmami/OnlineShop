@@ -33,7 +33,7 @@ namespace OnlineShop.Domain.Entities.User
         public virtual Seller? Seller { get; set; }
 
         public int RoleId { get; set; }
-        public virtual Role? Role { get; set; }
+        public virtual Role Role { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
         public virtual ICollection<DiscountUser> DiscountUsers { get; set; } = new List<DiscountUser>();

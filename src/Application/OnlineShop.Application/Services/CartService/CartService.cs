@@ -4,13 +4,22 @@ using OnlineShop.Application.Mapping;
 using OnlineShop.Data.Core;
 using OnlineShop.Data.Core.Repositories;
 using OnlineShop.Domain.Entities.Cart;
+using OnlineShop.Domain.Identity;
 
 namespace OnlineShop.Application.Services.CartService
 {
     public class CartService : ApplicationService<Guid, Cart, CartInputDto, CartUpdateDto, CartOutputDto, CartSPFInputDto>, ICartService
     {
-        public CartService(IMapping mapping, IRepository<Cart, Guid> repository, IUnitOfWork unitOfWork) : base(mapping, repository, unitOfWork)
+        private readonly IUser _user;
+        public CartService(IMapping mapping, IRepository<Cart, Guid> repository, IUnitOfWork unitOfWork, IUser user) : base(mapping, repository, unitOfWork)
         {
+            _user = user;
+        }
+
+        public override Task<Guid> CreateAsync(CartInputDto inputDto)
+        {
+            inputDto.UserId = _user.UserId;
+            return base.CreateAsync(inputDto);
         }
 
         public CartDetailInputDto GetWithDetail(Guid id)
